@@ -31,7 +31,7 @@ end
 
 ## cargando data en init
 abrir_archivo(alumnos)
-##print alumnos
+#print alumnos
 
 alumnos.each do |nombre, array_notas|
       alumnos_promedios.store(nombre, array_notas.inject(0) { |acc, valor| acc + valor } / array_notas.length) 
@@ -45,9 +45,10 @@ while true
   case opcion
   when 1 ##promedio de notas
 
-      File.open( "alumnos/Promedios.txt",'a') do |archivo| 
-         valor = array_notas.inject(0) { |acc, valor| acc + valor } / array_notas.length
-         archivo.puts "#{nombre} #{valor}"
+      File.open( "alumnos/Promedios.txt",'w') do |archivo| 
+         alumnos_promedios.each do |nombre, promedio|
+          archivo.puts "#{nombre} #{promedio}"
+         end
       end
   
     puts "Archivos creados!"
