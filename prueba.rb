@@ -51,7 +51,7 @@ while true
          end
       end
   
-    puts "Archivos creados!"
+    puts "Archivo creado!"
     print alumnos_promedios
 
   when 2 ##mostrar total inasistencias
