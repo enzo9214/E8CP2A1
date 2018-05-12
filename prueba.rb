@@ -25,12 +25,18 @@ end
 
 def comprobar_aprobacion(hash, nota_minima)
   hash.each do |nombre, promedio|
-    puts "#{nombre} aprobo con promedio #{promedio}"if promedio >= 5
+    puts "#{nombre} aprobo con promedio #{promedio}" if promedio >= nota_minima
   end  
 end  
 
+## cargando data en init
 abrir_archivo(alumnos)
-print alumnos
+##print alumnos
+
+alumnos.each do |nombre, array_notas|
+      alumnos_promedios.store(nombre, array_notas.inject(0) { |acc, valor| acc + valor } / array_notas.length) 
+end
+##print alumnos_promedios
 
 while true
   puts "\nIngrese opcion"
@@ -39,13 +45,11 @@ while true
   case opcion
   when 1 ##promedio de notas
 
-
-    alumnos.each do |nombre, array_notas|
-      alumnos_promedios.store(nombre, array_notas.inject(0) { |acc, valor| acc + valor } / array_notas.length)  
-
-      File.open( 'alumnos/'+nombre+".txt",'w') { |archivo| archivo.puts( 
-        array_notas.inject(0) { |acc, valor| acc + valor } / array_notas.length) }
-    end
+      File.open( "alumnos/Promedios.txt",'a') do |archivo| 
+         valor = array_notas.inject(0) { |acc, valor| acc + valor } / array_notas.length
+         archivo.puts "#{nombre} #{valor}"
+      end
+  
     puts "Archivos creados!"
     print alumnos_promedios
 
@@ -57,7 +61,14 @@ while true
       puts "Hay #{suma} inasistencias"
 
   when 3 ##comprobar si alumnos aprueban
-      comprobar_aprobacion(alumnos_promedios, 5)
+      puts "Ingresa nota minima de aprobacion"
+      nota_minima = gets.chomp.to_i
+
+      if nota_minima == 0
+        nota_minima = 5
+      end
+
+      comprobar_aprobacion(alumnos_promedios, nota_minima)
 
   when 4
     break
